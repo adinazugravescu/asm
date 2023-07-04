@@ -10,42 +10,42 @@ checkers:
     mov ebp, esp
     pusha
 
-    mov eax, [ebp + 8]	; x = linia
-    mov ebx, [ebp + 12]	; y = coloana
-    mov ecx, [ebp + 16] ; tabelul
+    mov eax, [ebp + 8]	; x = line
+    mov ebx, [ebp + 12]	; y = column
+    mov ecx, [ebp + 16] ; table
 
     ;; DO NOT MODIFY
     ;; FREESTYLE STARTS HERE
 
-    ;;Verificare pozitie curenta valida
-    ;;Daca pozitia curenta admite, actualizarea poziției din stânga sus
-    push eax    ;se pune eax pe stiva
-    mov edx, eax    ;edx este indicele pentru linia elCrt
-    add edx, 1      ;se adauga 1 pentru verificare valid
-    cmp edx, 7      ;daca este > 7 ,nu e valid
+   ;; Check if current position is valid
+   ;; If the current position allows, update the position in the top left corner
+    push eax    ;push eax onto the stack
+    mov edx, eax    ;edx is the index for current element`s line
+    add edx, 1      ;add 1 for valid check
+    cmp edx, 7      ; > 7 ,then it is invalid
     jg skip_left_up
-    mov esi, ebx    ;esi indicele pentru coloana elCrt
-    sub esi, 1      ;se scade 1 pentru verificare valid
-    cmp esi, 0      ;daca < 0, nu e valid
+    mov esi, ebx    ;esi is the index for current element`s column
+    sub esi, 1      ;subtsract 1 for valid check
+    cmp esi, 0      ; < 0, then it is invalid
     jl skip_left_up
-    mov edi, edx    ;caz valid,deci in edi se pune linia pentru elNou
-    shl edi, 3   ;8*linia
-    add edi, esi    ;linie+col
+    mov edi, edx    ;valid case,then edi stores the line`s index(for new element)
+    shl edi, 3   ;8*line
+    add edi, esi    ;line+col
     mov al, byte [ecx + edi]
-    cmp al, 0   ;verificare daca elNou nu este deja 1
+    cmp al, 0   ;check new element
     jne skip_left_up
-    mov byte [ecx + edi], 1 ;daca este 0, se pune 1 pt pozitia 
+    mov byte [ecx + edi], 1 ;if the value is 0, it becomes 1 on that position 
     
-    ;;sunt astfel 4 cazuri de tratat, la celelalte 3 difera doar
-    ;;conditiile ca pozitia curenta sa admita pozitia dorita
-    ;;calculul offsetului pentru noua pozitie ramane acelasi
-    ;;prin conditiile ca elCrt sa admita pozitia dorita, se modifica
-    ;;contorii de linie si coloana, care vor servi ulterior
-    ;;in calculul offsetului
+    	;; There are 4 cases to handle, for the other 3 the only difference is
+	;; the conditions for the current position to allow the desired position
+	;; the calculation of the offset for the new position remains the same
+	;; through the conditions for elCrt to allow the desired position, it is modified
+	;; the line and column counters, which will be used later
+	;; in the calculation of the offset
 
 skip_left_up:
-    ;;Verificare pozitie curenta valida
-    ;;Daca pozitia curenta admite, actualizarea poziției din dreapta sus
+    ;; Check if current position is valid
+    ;; If the current position allows, update the position in the top right corner
     pop eax
     mov edx, eax
     push eax
@@ -65,8 +65,8 @@ skip_left_up:
     mov byte [ecx + edi], 1
 
 skip_right_up:
-    ;;Verificare pozitie curenta valida
-    ;;Daca pozitia curenta admite, actualizarea poziției din stânga jos
+    ;; Check if current position is valid
+    ;; If the current position allows, update the position in the bottom left corner
     pop eax
     mov edx, eax
     push eax
@@ -86,8 +86,8 @@ skip_right_up:
     mov byte [ecx + edi], 1
 
 skip_left_down:
-    ;;Verificare pozitie curenta valida
-    ;;Daca pozitia curenta admite, actualizarea poziției din dreapta jos
+    ;; Check if current position is valid
+    ;; If the current position allows, update the position in the bottom right corner
     pop eax
     mov edx, eax
     push eax
