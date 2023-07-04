@@ -19,30 +19,30 @@ simple:
    
     ;; Your code starts here
 
-    ;; Bucla pentru parcurgerea stringului si pentru shiftare
-    mov ebx, 0          ; Contor
-    mov eax, 0          ; Caracter
+    ;;Loop for iterating through the string and for shifting.
+    mov ebx, 0          ; counter
+    mov eax, 0          ; character
 
 loop:
-    cmp ebx, ecx        ; Verificare final
+    cmp ebx, ecx        ; checking ending condition
     je endloop
-    mov al, [esi + ebx] ; Extragem elementul curent
-    cmp al, 65          ; Verificam pentru A
-    jl noshift          ; Jump daca caracterul curent nu este litera mare(<A)
-    cmp al, 90          ; Verificam pentru Z
-    jg noshift          ; Jump daca caracterul curent nu este litera mare(Z<)
-    sub al, 65          ; Extragem indexul 65
-    add al, dl          ; Shiftare
-    cmp al, 25          ; Verificare daca "trece" de Z
-    jle nooverflow      ; Jump daca caracterul se afla in intervalul 'A'-'Z'
+    mov al, [esi + ebx] ; extract the current element
+    cmp al, 65          ; checks A
+    jl noshift          ; Jump if the current character <A
+    cmp al, 90          ; checks Z
+    jg noshift          ; Jump if the current character Z<
+    sub al, 65          ; extracts index 65
+    add al, dl          ; Shifts
+    cmp al, 25          ; checking if it exceeds Z
+    jle nooverflow      ; Jump if the character is between 'A'-'Z'
     sub al, 26     
 
 nooverflow:
     add al, 65         
 
 noshift:
-    mov [edi + ebx], al ; Scrierea caracterului in string
-    inc ebx             ; Incrementare contor
+    mov [edi + ebx], al ; puts the character in the string
+    inc ebx             ; counter++
     jmp loop
 
 endloop:
